@@ -2,7 +2,7 @@ namespace Descontrolada.Blazor.Models;
 
 public class ResponseBase<T> 
 {
-    public List<string> Errors { get; set; } = new();
+    public List<string>? Errors { get; set; } = new();
 
     public bool IsSuccess { get; set; }
 

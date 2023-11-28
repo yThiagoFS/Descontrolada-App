@@ -5,52 +5,60 @@
 
 <h1 class="text-center">Listagem de produtos cadastrados</h1>
 
+
 @if(_PaginatedProductsViewModel is not null && _PaginatedProductsViewModel.Data.Any()) 
 {
-    <div class="container d-flex">
-    <div class="row">
-        @foreach (var product in _PaginatedProductsViewModel.Data)
+    <span><strong>Total de itens: </strong>@(_PaginatedProductsViewModel?.TotalItems)</span>
+    <table class="table">
+    <thead class="thead-dark">
+        <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Nome</th>
+        <th scope="col">Descrição</th>
+        <th scope="col">Preço</th>
+        <th scope="col">Tipo do produto</th>
+        <th scope="col">Quantidade em estoque</th>
+        <th scope="col">Data de criação</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var product in _PaginatedProductsViewModel!.Data)
         {
-            <div class="col-md-4">
-                <div class="card mt-3">
-                    <div class="card-body">
-                        <h5 class="card-title">@product.Name</h5>
-                        <p class="card-text"><strong>Descrição:</strong> @product.Description</p>
-                        <p class="card-text"><strong>Preço:</strong> @product.Price.ToString("C2")</p>
-                        <p class="card-text"><strong>Tipo do produto:</strong> @product.ProductType</p>
-                        <p class="card-text"><strong>Quantidade em estoque:</strong> @product.StockQuantity</p>
-                        <p class="card-text"><strong>Criado em:</strong> @product.CreatedAt.ToString("dd/MM/yyyy")
-                        </p>
-                    </div>
-                </div>
-            </div>
+            <tr>
+                <th>@product.Id</th>
+                <td>@product.Name</td>
+                <td>@product.Description</td>
+                <td>@product.Price.ToString("C2")</td>
+                <td>@product.ProductType</td>
+                <td>@product.StockQuantity</td>
+                <td>@product.CreatedAt.ToString("dd/MM/yyyy")</td>
+            </tr>
         }
-
-        <div class="btn-container">
-            <button class="navigation-btn @_previusBtnClass" @onclick="@Previus">Anterior</button>
-            <span>@_pageIndex / @_PaginatedProductsViewModel.TotalPages</span>
-            <button class="navigation-btn @_nextBtnClass" @onclick="@Next">Próximo</button>
-        </div>
-        
+    </tbody>
+    </table>
+    <div class="btn-container">
+        <button class="navigation-btn @_previusBtnClass" @onclick="@PreviousPage">Anterior</button>
+        <span>@_pageIndex / @_PaginatedProductsViewModel.TotalPages</span>
+        <button class="navigation-btn @_nextBtnClass" @onclick="@NextPage">Próximo</button>
     </div>
-</div>
 }
 
 @code 
 {
+    [CascadingParameter]
+    public Error Error { get; set; }
     private PaginatedItemsViewModel<ProductViewModel> _PaginatedProductsViewModel;
     
     private int _pageSize = 5;
     private int _skip = 0;
     private int _pageIndex = 1;
-    private string _previusBtnClass => _pageIndex > 1 ? "active-btn" : "disabled-btn";
-    private string _nextBtnClass => _pageIndex < _PaginatedProductsViewModel.TotalPages 
-        ? "active-btn" : "disabled-btn";
+    private string _previusBtnClass => GetPaginationBtnClass(_pageIndex > 1);
+    private string _nextBtnClass => GetPaginationBtnClass(_pageIndex < _PaginatedProductsViewModel.TotalPages);
 
-    protected override async Task OnInitializedAsync()
+    protected override async Task  OnInitializedAsync()
         => await LoadPage();
     
-    private async Task Next() 
+    private async Task NextPage() 
     {
         if(_pageIndex < _PaginatedProductsViewModel.TotalPages)
         {
@@ -60,7 +68,7 @@
         }
     }
 
-    private async Task Previus() 
+    private async Task PreviousPage() 
     {
         if(_pageIndex > 1)
         {
@@ -71,21 +79,44 @@
     }
 
     private async Task LoadPage()
-    {
-        _PaginatedProductsViewModel = await GetProducts();
-    }
+        => _PaginatedProductsViewModel = await GetProducts();
 
     private async Task<PaginatedItemsViewModel<ProductViewModel>> GetProducts()
     {
-        var BASE_URL = $"products?skip={_skip}&take={_pageSize}";
+        List<string> errors = new();
+            
+        try
+        {
+            var baseURL = $"products?skip={_skip}&take={_pageSize}";
+            var response = await _client.GetFromJsonAsync<ResponseBase<PaginatedResponseDTO<ProductViewModel>>>(baseURL);
 
-        var response = await _client.GetFromJsonAsync<ResponseBase<PaginatedResponseDTO<ProductViewModel>>>(BASE_URL);
+            @* if(!response?.IsSuccess ?? true) 
+            {
+                if(response is null) 
+                    errors.Add("Algo de errado aconteceu ao tentar se comunicar com o servidor.");
+                else 
+                    errors.AddRange(response!.Errors);
 
-        var totalCount = response?.Data.TotalCount;
+                Error.ProcessError(errors);
 
-        var data = response?.Data?.Items;
+                return null!;
+            } *@
 
-        return new(_pageIndex, _pageSize, (int)totalCount, data);
+            var totalCount = response!.Data.TotalCount;
+            var data = response!.Data.Items;
+
+            return new(_pageIndex, _pageSize, (int)totalCount, data);
+        }
+        catch(Exception ex) 
+        {
+            @* errors.Add($"Algo de inesperado aconteceu ao tentar renderizar os produtos. Por favor, atualize a página e tente novamente. Erro: {ex.Message}");
+            Error.ProcessError(errors); *@
+
+            return null!;
+        }
     }
+
+    private string GetPaginationBtnClass(bool condition)
+        => condition ? "active-btn" : "disabled-btn";
 }
 

@@ -16,7 +16,7 @@ public static class EndpointExtensions
             return Results.Ok(await _productService.GetAllProductsAsync(skip,take));
         });
 
-        builder.MapPost("/products/create", async ([FromBody] ProductCreateDTO request, [FromServices] IProductService _productService) => 
+        builder.MapPost("/products/create", async ([FromBody] ProductCreateRequestDTO request, [FromServices] IProductService _productService) => 
         {
             var productCreated = await _productService.CreateProductAsync(request);
 

@@ -6,7 +6,7 @@ namespace Descontrolada.API.Services.Abstractions;
 
 public interface IProductService 
 {
-    Task<ResponseBaseDTO<Product>> CreateProductAsync(ProductCreateDTO productDTO);
+    Task<ResponseBaseDTO<ProductResponseDTO>> CreateProductAsync(ProductCreateRequestDTO productDTO);
 
-    Task<ResponseBaseDTO<PaginatedResponseDTO<Product>>> GetAllProductsAsync(int skip, int take);
+    Task<ResponseBaseDTO<PaginatedResponseDTO<ProductResponseDTO>>> GetAllProductsAsync(int skip, int take);
 }

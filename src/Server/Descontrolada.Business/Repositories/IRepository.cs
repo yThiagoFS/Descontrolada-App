@@ -10,7 +10,7 @@ public interface IRepository<T> where T : EntityBase
 
     Task<IEnumerable<T>> GetAllAsync();
 
-    Task<(int, IEnumerable<T>)> GetAllPaginatedAsync(int skip, int take);
+    Task<(int Count, IEnumerable<T> Items)> GetAllPaginatedAsync(int skip, int take);
 
     Task<T>? GetByIdAsync(long id);
 

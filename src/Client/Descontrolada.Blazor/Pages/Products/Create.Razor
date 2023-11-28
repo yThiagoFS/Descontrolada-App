@@ -1,11 +1,14 @@
 @page "/create"
+@using System.Text.Json;
+@using System.Text.Json.Serialization;
 @inject HttpClient _client
+@inject NavigationManager _navManager
 
 <PageTitle>Criar Produto</PageTitle>
 
 <h1 class="text-center h123">Cadastre um novo produto</h1>
 
-<EditForm Model="@_Model" OnSubmit="HandleSubmitAsync">
+<EditForm Model="@_Model" OnValidSubmit="HandleSubmitAsync">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -43,6 +46,8 @@
 
 @code 
 {
+    [CascadingParameter]
+    public Error Error { get; set; }
     private ProductViewModel _Model { get; set; }
 
     const string _baseURL = "products/create";
@@ -52,7 +57,20 @@
 
     private async Task HandleSubmitAsync() 
     {
-        _Model.CreatedAt = DateTime.Now;
-        var response = _client.PostAsJsonAsync<ProductViewModel>(_baseURL, _Model);
+        _Model.CreatedAt = DateTime.UtcNow;
+
+        try
+        {
+            var response = await _client.PostAsJsonAsync<ProductViewModel>(_baseURL, _Model);
+
+            if(!response.IsSuccessStatusCode ) 
+                Error.ProcessError(response.ReasonPhrase);
+            else
+                _navManager.NavigateTo("/");
+        }
+        catch
+        {
+            Error.ProcessError("Algo inesperado ocorreu ao tentar salvar o produto. Por favor, tente novamente.");
+        }
     }
 }

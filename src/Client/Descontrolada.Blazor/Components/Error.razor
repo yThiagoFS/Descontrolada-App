@@ -1,0 +1,50 @@
+@inherits ComponentBase
+
+<CascadingValue Value="this">
+    @ChildContent
+</CascadingValue>
+
+<div class="error-modal" >
+    <div class="error-modal-content">
+        @if (_errorMessages != null)
+        {
+            foreach (var error in _errorMessages)
+            {
+                <div>@error</div>
+            }
+        }
+    </div>
+    <span class="error-modal-close">&times;</span>
+</div>
+
+@code  
+{
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private List<string> _errorMessages { get; set; } = new();
+
+    private bool _renderErrorMessages = false;
+
+    public void ProcessError(List<string>? errors, Exception? exception = null)
+    {
+        _errorMessages = errors;
+        RenderErrors(exception);
+    }
+
+    public void ProcessError(string error, Exception? exception = null)
+    {
+        _errorMessages.Add(error);
+        RenderErrors(exception);
+    }
+
+    private void RenderErrors(Exception? exception) 
+    {
+        _renderErrorMessages = true;
+
+        if(exception is not null)
+            _errorMessages.Add(exception.Message);
+        
+        StateHasChanged();
+    }
+}

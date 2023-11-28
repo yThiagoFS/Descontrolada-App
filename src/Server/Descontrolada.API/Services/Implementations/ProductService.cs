@@ -1,3 +1,4 @@
+using AutoMapper;
 using Descontrolada.API.DTOs;
 using Descontrolada.API.DTOs.Products;
 using Descontrolada.API.Services.Abstractions;
@@ -6,32 +7,30 @@ using Descontrolada.Business.Repositories;
 
 namespace Descontrolada.API.Services.Implementations;
 
-public class ProductService(IProductRepository repository) : IProductService
+public class ProductService(IProductRepository repository, IMapper mapper) : IProductService
 {
     private readonly IProductRepository _productRepository = repository;
+    private readonly IMapper _mapper = mapper;
 
-    public async Task<ResponseBaseDTO<Product>> CreateProductAsync(ProductCreateDTO productDTO)
+    public async Task<ResponseBaseDTO<ProductResponseDTO>> CreateProductAsync(ProductCreateRequestDTO productDTO)
     {
-        var product = new Product() 
-        {
-            Name = productDTO.Name,
-            Description = productDTO.Description,
-            ProductType = productDTO.ProductType,
-            Price = productDTO.Price,
-            StockQuantity = productDTO.StockQuantity
-        };
+        
+
+        var product = _mapper.Map<Product>(productDTO);
 
         await _productRepository.AddAsync(product);
 
-        return new ResponseBaseDTO<Product>(product);
+        return new ResponseBaseDTO<ProductResponseDTO>(_mapper.Map<ProductResponseDTO>(product));
     }
 
-    public async Task<ResponseBaseDTO<PaginatedResponseDTO<Product>>> GetAllProductsAsync(int skip = 0, int take = 5)
+    public async Task<ResponseBaseDTO<PaginatedResponseDTO<ProductResponseDTO>>> GetAllProductsAsync(int skip = 0, int take = 5)
     {
-        var products = await _productRepository.GetAllPaginatedAsync(skip, take);
-        
-        var paginatedResponse = new PaginatedResponseDTO<Product>(products.Item1, products.Item2);
+        var (productCount, products) = await _productRepository.GetAllPaginatedAsync(skip, take);
 
-        return new ResponseBaseDTO<PaginatedResponseDTO<Product>>(paginatedResponse);
+        var productResponseDTO = _mapper.Map<IEnumerable<ProductResponseDTO>>(products);
+        
+        var paginatedResponse = new PaginatedResponseDTO<ProductResponseDTO>(productCount, productResponseDTO);
+
+        return new ResponseBaseDTO<PaginatedResponseDTO<ProductResponseDTO>>(paginatedResponse);
     }
 }
