@@ -1,0 +1,91 @@
+﻿@page "/"
+@inject HttpClient _client
+
+<PageTitle>Home</PageTitle>
+
+<h1 class="text-center">Listagem de produtos cadastrados</h1>
+
+@if(_PaginatedProductsViewModel is not null && _PaginatedProductsViewModel.Data.Any()) 
+{
+    <div class="container d-flex">
+    <div class="row">
+        @foreach (var product in _PaginatedProductsViewModel.Data)
+        {
+            <div class="col-md-4">
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <h5 class="card-title">@product.Name</h5>
+                        <p class="card-text"><strong>Descrição:</strong> @product.Description</p>
+                        <p class="card-text"><strong>Preço:</strong> @product.Price.ToString("C2")</p>
+                        <p class="card-text"><strong>Tipo do produto:</strong> @product.ProductType</p>
+                        <p class="card-text"><strong>Quantidade em estoque:</strong> @product.StockQuantity</p>
+                        <p class="card-text"><strong>Criado em:</strong> @product.CreatedAt.ToString("dd/MM/yyyy")
+                        </p>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="btn-container">
+            <button class="navigation-btn @_previusBtnClass" @onclick="@Previus">Anterior</button>
+            <span>@_pageIndex / @_PaginatedProductsViewModel.TotalPages</span>
+            <button class="navigation-btn @_nextBtnClass" @onclick="@Next">Próximo</button>
+        </div>
+        
+    </div>
+</div>
+}
+
+@code 
+{
+    private PaginatedItemsViewModel<ProductViewModel> _PaginatedProductsViewModel;
+    
+    private int _pageSize = 5;
+    private int _skip = 0;
+    private int _pageIndex = 1;
+    private string _previusBtnClass => _pageIndex > 1 ? "active-btn" : "disabled-btn";
+    private string _nextBtnClass => _pageIndex < _PaginatedProductsViewModel.TotalPages 
+        ? "active-btn" : "disabled-btn";
+
+    protected override async Task OnInitializedAsync()
+        => await LoadPage();
+    
+    private async Task Next() 
+    {
+        if(_pageIndex < _PaginatedProductsViewModel.TotalPages)
+        {
+            _pageIndex++;
+            _skip += _pageSize;
+            await LoadPage();
+        }
+    }
+
+    private async Task Previus() 
+    {
+        if(_pageIndex > 1)
+        {
+            _pageIndex--;
+            _skip -= _pageSize;
+            await LoadPage();
+        }
+    }
+
+    private async Task LoadPage()
+    {
+        _PaginatedProductsViewModel = await GetProducts();
+    }
+
+    private async Task<PaginatedItemsViewModel<ProductViewModel>> GetProducts()
+    {
+        var BASE_URL = $"products?skip={_skip}&take={_pageSize}";
+
+        var response = await _client.GetFromJsonAsync<ResponseBase<PaginatedResponseDTO<ProductViewModel>>>(BASE_URL);
+
+        var totalCount = response?.Data.TotalCount;
+
+        var data = response?.Data?.Items;
+
+        return new(_pageIndex, _pageSize, (int)totalCount, data);
+    }
+}
+

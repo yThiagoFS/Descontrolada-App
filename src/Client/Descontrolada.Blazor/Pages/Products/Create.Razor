@@ -1,0 +1,58 @@
+@page "/create"
+@inject HttpClient _client
+
+<PageTitle>Criar Produto</PageTitle>
+
+<h1 class="text-center h123">Cadastre um novo produto</h1>
+
+<EditForm Model="@_Model" OnSubmit="HandleSubmitAsync">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label for="Name" class="form-label">Nome do produto</label>
+        <InputText class="form-control" type="text" @bind-Value="_Model!.Name" id="Name" />
+    </div>
+
+    <div class="mb-3">
+        <label for="Description" class="form-label">Descrição do produto</label>
+        <InputText class="form-control" type="text" @bind-Value="_Model!.Description" id="Description" />
+    </div>
+
+    <div class="mb-3">
+        <label for="ProductType" class="form-label">Tipo do produto</label>
+        <InputSelect class="form-control" type="text" @bind-Value="_Model!.ProductType" id="ProductType">
+            <option value="" selected>Selecione o tipo do produto</option>
+            <option value="Orgânico">Orgânico</option>
+            <option value="Não orgânico">Não orgânico</option>
+        </InputSelect>
+    </div>
+
+    <div class="mb-3">
+        <label for="StockQuantity" class="form-label">Quantidade em estoque</label>
+        <InputNumber class="form-control" type="text" @bind-Value="_Model!.StockQuantity" id="StockQuantity" />
+    </div>
+
+    <div class="mb-3">
+        <label for="Price" class="form-label">Preço do produto</label>
+        <InputNumber class="form-control" @bind-Value="_Model!.Price" id="Price" />
+    </div>
+
+    <button class="btn btn-success" type="submit">Criar</button>
+</EditForm>
+
+@code 
+{
+    private ProductViewModel _Model { get; set; }
+
+    const string _baseURL = "products/create";
+
+    protected override async Task OnInitializedAsync() 
+        => _Model ??= new ProductViewModel();
+
+    private async Task HandleSubmitAsync() 
+    {
+        _Model.CreatedAt = DateTime.Now;
+        var response = _client.PostAsJsonAsync<ProductViewModel>(_baseURL, _Model);
+    }
+}

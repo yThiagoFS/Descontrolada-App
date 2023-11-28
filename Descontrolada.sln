@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4F460469-DAAA-4956-98B8-642AC29C2FB4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{4B816F31-73FF-4860-82D0-D8303C974B62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Descontrolada.Blazor", "src\Client\Descontrolada.Blazor\Descontrolada.Blazor.csproj", "{617C5ADC-ACD7-413C-A8BD-00FA63E295C5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Server", "Server", "{33B5459B-11C2-4D39-9A39-CC7FE22B0A06}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Descontrolada.API", "src\Server\Descontrolada.API\Descontrolada.API.csproj", "{439CDC7B-599C-4238-892A-57E8B7503E27}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Descontrolada.Business", "src\Server\Descontrolada.Business\Descontrolada.Business.csproj", "{307C2040-6AF6-4CA9-8903-6250C2D4083D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Descontrolada.Data", "src\Server\Descontrolada.Data\Descontrolada.Data.csproj", "{BEB57E45-A00B-4BEC-8243-5313F1013BC5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{617C5ADC-ACD7-413C-A8BD-00FA63E295C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{617C5ADC-ACD7-413C-A8BD-00FA63E295C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{617C5ADC-ACD7-413C-A8BD-00FA63E295C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{617C5ADC-ACD7-413C-A8BD-00FA63E295C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{439CDC7B-599C-4238-892A-57E8B7503E27}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{439CDC7B-599C-4238-892A-57E8B7503E27}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{439CDC7B-599C-4238-892A-57E8B7503E27}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{439CDC7B-599C-4238-892A-57E8B7503E27}.Release|Any CPU.Build.0 = Release|Any CPU
+		{307C2040-6AF6-4CA9-8903-6250C2D4083D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{307C2040-6AF6-4CA9-8903-6250C2D4083D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{307C2040-6AF6-4CA9-8903-6250C2D4083D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{307C2040-6AF6-4CA9-8903-6250C2D4083D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEB57E45-A00B-4BEC-8243-5313F1013BC5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEB57E45-A00B-4BEC-8243-5313F1013BC5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEB57E45-A00B-4BEC-8243-5313F1013BC5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEB57E45-A00B-4BEC-8243-5313F1013BC5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4B816F31-73FF-4860-82D0-D8303C974B62} = {4F460469-DAAA-4956-98B8-642AC29C2FB4}
+		{617C5ADC-ACD7-413C-A8BD-00FA63E295C5} = {4B816F31-73FF-4860-82D0-D8303C974B62}
+		{33B5459B-11C2-4D39-9A39-CC7FE22B0A06} = {4F460469-DAAA-4956-98B8-642AC29C2FB4}
+		{439CDC7B-599C-4238-892A-57E8B7503E27} = {33B5459B-11C2-4D39-9A39-CC7FE22B0A06}
+		{307C2040-6AF6-4CA9-8903-6250C2D4083D} = {33B5459B-11C2-4D39-9A39-CC7FE22B0A06}
+		{BEB57E45-A00B-4BEC-8243-5313F1013BC5} = {33B5459B-11C2-4D39-9A39-CC7FE22B0A06}
+	EndGlobalSection
+EndGlobal
