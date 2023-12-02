@@ -46,7 +46,8 @@ Siga as etapas abaixo para configurar e executar o projeto:
 
    
 
-4. Executando a aplicação Blazor:
+3. Executando a aplicação Blazor:
+   
    3.1. Acesse a pasta da aplicação Blazor:
    ```sh
    cd src/Client/Descontrolada.Blazor
