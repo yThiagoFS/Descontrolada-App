@@ -1,6 +1,5 @@
 using Descontrolada.API.DTOs;
 using Descontrolada.API.DTOs.Products;
-using Descontrolada.Business.Entities;
 
 namespace Descontrolada.API.Services.Abstractions;
 

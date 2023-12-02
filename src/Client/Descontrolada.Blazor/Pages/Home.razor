@@ -64,7 +64,6 @@ else
 
     protected override async Task  OnInitializedAsync()
     {
-        Error.ClearErrors();
         await LoadPage();
     }
     
@@ -89,7 +88,10 @@ else
     }
 
     private async Task LoadPage()
-        => _PaginatedProductsViewModel = await GetProducts();
+    {
+        _PaginatedProductsViewModel = await GetProducts();
+        StateHasChanged();
+    }
 
     private async Task<PaginatedItemsViewModel<ProductViewModel>> GetProducts()
     {

@@ -10,14 +10,15 @@
     opacity: 0;
     user-select: none;
     border-radius: 20px;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     z-index: -1;
 }
 
 .error-modal.active {
-    transform: translate(-60%, -50%);
+    display: flex;
+    transform: translate(-50%, -50%);
     background-color:rgba(159, 60, 235, 0.834);
     opacity: 1;
     z-index: 2;
@@ -38,4 +39,35 @@
     color: red;
     user-select: all;
     cursor: pointer;
+}
+
+@media( max-width:1200px ) 
+{
+    .error-modal.active {
+        width: 50vw;
+    }
+}
+
+@media( max-width:1100px ) 
+{
+    .error-modal.active {
+        left: 64%;
+    }
+}
+
+@media( max-width:850px ) 
+{
+    .error-modal.active {
+       height: 55vh;
+       transform: translate(-45%, -40%);
+    }
+}
+
+@media( max-width:641px ) 
+{
+    .error-modal.active {
+       width: 80vw;
+       height: 30vh;
+       transform: translate(-70%, -40%);
+    }
 }

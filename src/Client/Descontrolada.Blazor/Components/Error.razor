@@ -25,6 +25,7 @@
     private List<string> _errorMessages { get; set; } = new();
     private bool _renderErrorMessages = false;
     private string _activeModalClass => _renderErrorMessages ? "active"  : string.Empty;
+    
     public void ProccessError(List<string>? errors, Exception? exception = null)
     {
         _errorMessages = errors;

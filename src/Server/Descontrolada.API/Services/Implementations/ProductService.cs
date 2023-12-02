@@ -14,13 +14,11 @@ public class ProductService(IProductRepository repository, IMapper mapper) : IPr
 
     public async Task<ResponseBaseDTO<ProductResponseDTO>> CreateProductAsync(ProductCreateRequestDTO productDTO)
     {
-        
-
         var product = _mapper.Map<Product>(productDTO);
 
         await _productRepository.AddAsync(product);
 
-        return new ResponseBaseDTO<ProductResponseDTO>(_mapper.Map<ProductResponseDTO>(product));
+        return new ResponseBaseDTO<ProductResponseDTO>(_mapper.Map<ProductResponseDTO>(product), 200);
     }
 
     public async Task<ResponseBaseDTO<PaginatedResponseDTO<ProductResponseDTO>>> GetAllProductsAsync(int skip = 0, int take = 5)
@@ -31,6 +29,6 @@ public class ProductService(IProductRepository repository, IMapper mapper) : IPr
         
         var paginatedResponse = new PaginatedResponseDTO<ProductResponseDTO>(productCount, productResponseDTO);
 
-        return new ResponseBaseDTO<PaginatedResponseDTO<ProductResponseDTO>>(paginatedResponse);
+        return new ResponseBaseDTO<PaginatedResponseDTO<ProductResponseDTO>>(paginatedResponse, 200);
     }
 }

@@ -13,6 +13,7 @@ public class ResponseBaseDTO<T>
     {
         Errors = errors;
         StatusCode = statusCode;
+        IsSuccess = false;
     } 
     
 
@@ -20,12 +21,13 @@ public class ResponseBaseDTO<T>
     {
         Errors.Add(error);
         StatusCode = statusCode;
+        IsSuccess = false;
     }
 
 
     public List<string> Errors { get; set; } = new();
 
-    public bool IsSuccess => Errors?.Any() ?? true;
+    public bool IsSuccess { get; set; } = true;
 
     public int StatusCode = 200;
 
