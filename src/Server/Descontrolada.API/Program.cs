@@ -23,7 +23,6 @@ builder.Services.AddCors(opts => {
 });
 builder.Services.RegisterServices();
 builder.Services.AddDbContext<AppDbContext>(opts => opts.UseInMemoryDatabase("Descontrolada"));
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 var app = builder.Build();
 

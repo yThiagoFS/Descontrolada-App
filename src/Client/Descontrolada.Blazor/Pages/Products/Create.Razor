@@ -1,6 +1,4 @@
 @page "/create"
-@using System.Text.Json;
-@using System.Text.Json.Serialization;
 @inject HttpClient _client
 @inject NavigationManager _navManager
 
@@ -48,12 +46,15 @@
 {
     [CascadingParameter]
     public Error Error { get; set; }
-    private ProductViewModel _Model { get; set; }
 
+    private ProductViewModel _Model { get; set; }
     const string _baseURL = "products/create";
 
     protected override async Task OnInitializedAsync() 
-        => _Model ??= new ProductViewModel();
+    {   
+        Error.ClearErrors();
+        _Model ??= new ProductViewModel();
+    }
 
     private async Task HandleSubmitAsync() 
     {
@@ -64,13 +65,13 @@
             var response = await _client.PostAsJsonAsync<ProductViewModel>(_baseURL, _Model);
 
             if(!response.IsSuccessStatusCode ) 
-                Error.ProcessError(response.ReasonPhrase);
+                Error.ProccessError($"Não foi possível cadastrar o produto: {response.ReasonPhrase}");
             else
                 _navManager.NavigateTo("/");
         }
         catch
         {
-            Error.ProcessError("Algo inesperado ocorreu ao tentar salvar o produto. Por favor, tente novamente.");
+            Error.ProccessError("Algo inesperado ocorreu ao tentar salvar o produto. Por favor, tente novamente.");
         }
     }
 }

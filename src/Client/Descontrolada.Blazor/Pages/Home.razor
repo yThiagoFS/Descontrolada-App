@@ -5,7 +5,6 @@
 
 <h1 class="text-center">Listagem de produtos cadastrados</h1>
 
-
 @if(_PaginatedProductsViewModel is not null && _PaginatedProductsViewModel.Data.Any()) 
 {
     <span><strong>Total de itens: </strong>@(_PaginatedProductsViewModel?.TotalItems)</span>
@@ -42,6 +41,14 @@
         <button class="navigation-btn @_nextBtnClass" @onclick="@NextPage">Próximo</button>
     </div>
 }
+else if(_PaginatedProductsViewModel is null && !Error.HasError)
+{
+    <div class="text-center">Carregando os produtos...</div>
+}
+else 
+{
+    <div class="text-center">Atualize a página e tente novamente.</div>
+}
 
 @code 
 {
@@ -56,7 +63,10 @@
     private string _nextBtnClass => GetPaginationBtnClass(_pageIndex < _PaginatedProductsViewModel.TotalPages);
 
     protected override async Task  OnInitializedAsync()
-        => await LoadPage();
+    {
+        Error.ClearErrors();
+        await LoadPage();
+    }
     
     private async Task NextPage() 
     {
@@ -83,24 +93,22 @@
 
     private async Task<PaginatedItemsViewModel<ProductViewModel>> GetProducts()
     {
-        List<string> errors = new();
-            
         try
         {
+            Error.ClearErrors();
+            
             var baseURL = $"products?skip={_skip}&take={_pageSize}";
             var response = await _client.GetFromJsonAsync<ResponseBase<PaginatedResponseDTO<ProductViewModel>>>(baseURL);
 
-            @* if(!response?.IsSuccess ?? true) 
+            if(!response?.IsSuccess ?? true) 
             {
                 if(response is null) 
-                    errors.Add("Algo de errado aconteceu ao tentar se comunicar com o servidor.");
+                    Error.ProccessError("Algo de errado aconteceu ao tentar se comunicar com o servidor.");
                 else 
-                    errors.AddRange(response!.Errors);
-
-                Error.ProcessError(errors);
+                    Error.ProccessError(response!.Errors);
 
                 return null!;
-            } *@
+            }
 
             var totalCount = response!.Data.TotalCount;
             var data = response!.Data.Items;
@@ -109,8 +117,7 @@
         }
         catch(Exception ex) 
         {
-            @* errors.Add($"Algo de inesperado aconteceu ao tentar renderizar os produtos. Por favor, atualize a página e tente novamente. Erro: {ex.Message}");
-            Error.ProcessError(errors); *@
+            Error.ProccessError($"Algo de inesperado aconteceu ao tentar renderizar os produtos. Por favor, atualize a página e tente novamente. Erro: {ex.Message}");
 
             return null!;
         }

@@ -1,0 +1,41 @@
+.error-modal {
+    position: fixed;
+    left: 60%;
+    top: 50%;
+    transform: translate(-70%, -100%);
+    width:60vw;
+    height:20vh;
+    margin: 0 auto;
+    transition: .7s;
+    opacity: 0;
+    user-select: none;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: -1;
+}
+
+.error-modal.active {
+    transform: translate(-60%, -50%);
+    background-color:rgba(159, 60, 235, 0.834);
+    opacity: 1;
+    z-index: 2;
+}
+
+.error-modal-content {
+    color: white;
+    font-size: 1.2em;
+    padding:10px;
+    text-align: center;
+}
+
+.error-modal-close {
+    font-size: 2rem;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: red;
+    user-select: all;
+    cursor: pointer;
+}
