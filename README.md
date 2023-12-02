@@ -1,6 +1,4 @@
-# Descontrolada-App
-
-Aplicativo simples utilizando Blazor WebAssembly para cadastro e visualização de produtos.
+# Descontrolada-App: Aplicativo de Cadastro e Visualização de Produtos com Blazor WebAssembly
 
 ## Conteúdo
 
