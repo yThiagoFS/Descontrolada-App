@@ -31,7 +31,7 @@ Siga as etapas abaixo para configurar e executar o projeto:
 1. Clone este repositório:
 
    ```sh
-   [git clone https://github.com/yThiagoFS/balta.io_challenge.git](https://github.com/yThiagoFS/Descontrolada-App.git)
+   https://github.com/yThiagoFS/Descontrolada-App.git
    
 2. Executando a API:
    2.1. Acesse a pasta da API
