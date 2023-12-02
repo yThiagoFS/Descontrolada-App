@@ -53,7 +53,11 @@ Siga as etapas abaixo para configurar e executar o projeto:
 
    3.2. Execute o projeto
    ```sh
-   dotnet run OU dotnet watch run
+   dotnet run
+   ```
+   OU
+   ```sh
+    dotnet watch run
    ```
    A aplicação estará disponível em: `http://localhost:5277`.
 
