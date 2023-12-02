@@ -32,6 +32,7 @@ Siga as etapas abaixo para configurar e executar o projeto:
    https://github.com/yThiagoFS/Descontrolada-App.git
    
 2. Executando a API:
+   
    2.1. Acesse a pasta da API
    ```sh
    cd src/Server/Descontrolada.API
@@ -45,7 +46,7 @@ Siga as etapas abaixo para configurar e executar o projeto:
 
    
 
-3. Executando a aplicação Blazor:
+4. Executando a aplicação Blazor:
    3.1. Acesse a pasta da aplicação Blazor:
    ```sh
    cd src/Client/Descontrolada.Blazor
